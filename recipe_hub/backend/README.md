@@ -111,7 +111,7 @@ Follow prompts to create admin user. Set role to 'admin' in Django admin panel.
 python manage.py runserver
 ```
 
-Server will run on `http://localhost:8000`
+Server will run on `https://recipehub-backend-b0oz.onrender.com/api`
 
 ## API Endpoints
 
@@ -179,7 +179,7 @@ Create an `api.js` file in your React project:
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: 'https://recipehub-backend-b0oz.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },

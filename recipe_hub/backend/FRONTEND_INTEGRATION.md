@@ -17,7 +17,7 @@ Create `src/api.js` or `src/utils/api.js`:
 ```javascript
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://recipehub-backend-b0oz.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -365,15 +365,15 @@ try {
 Create `.env` in your React project:
 
 ```env
-VITE_API_BASE_URL=http://localhost:8000
+VITE_API_BASE_URL=https://recipehub-backend-b0oz.onrender.com/api
 # or for Create React App:
-# REACT_APP_API_BASE_URL=http://localhost:8000
+# REACT_APP_API_BASE_URL=https://recipehub-backend-b0oz.onrender.com/api
 ```
 
 Update `api.js`:
 
 ```javascript
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://recipehub-backend-b0oz.onrender.com/api';
 // or for Create React App:
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://recipehub-backend-b0oz.onrender.com/api';
 ```

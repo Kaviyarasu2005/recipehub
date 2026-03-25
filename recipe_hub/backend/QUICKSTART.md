@@ -37,7 +37,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Server runs on `http://localhost:8000`
+Server runs on `https://recipehub-backend-b0oz.onrender.com/api`
 
 ## 3. Test API
 
@@ -45,20 +45,20 @@ Server runs on `http://localhost:8000`
 
 ```bash
 # Signup
-curl -X POST http://localhost:8000/auth/signup \
+curl -X POST https://recipehub-backend-b0oz.onrender.com/api/auth/signup \
   -H "Content-Type: application/json" \
   -d '{"username":"testuser","email":"test@example.com","password":"testpass123","password2":"testpass123","role":"user"}'
 
 # Login
-curl -X POST http://localhost:8000/auth/login \
+curl -X POST https://recipehub-backend-b0oz.onrender.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"testuser","password":"testpass123"}'
 
 # Get videos (no auth required)
-curl http://localhost:8000/videos?status=approved
+curl https://recipehub-backend-b0oz.onrender.com/api/videos?status=approved
 
 # Get videos with auth (replace TOKEN with access token from login)
-curl http://localhost:8000/videos \
+curl https://recipehub-backend-b0oz.onrender.com/api/videos \
   -H "Authorization: Bearer TOKEN"
 ```
 
@@ -67,7 +67,7 @@ curl http://localhost:8000/videos \
 ```python
 import requests
 
-BASE_URL = "http://localhost:8000"
+BASE_URL = "https://recipehub-backend-b0oz.onrender.com/api"
 
 # Login
 response = requests.post(f"{BASE_URL}/auth/login", json={
@@ -85,7 +85,7 @@ print(response.json())
 
 ## 4. Access Django Admin
 
-1. Go to `http://localhost:8000/django-admin/`
+1. Go to `https://recipehub-backend-b0oz.onrender.com/api/django-admin/`
 2. Login with superuser credentials
 3. Manage users, videos, jobs, etc.
 
