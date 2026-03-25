@@ -1,6 +1,6 @@
 # API Endpoints Reference
 
-All endpoints are prefixed with the base URL: `https://recipehub-backend-b0oz.onrender.com/api`
+All endpoints are prefixed with the base URL: `https://recipehub-backend-b0oz.onrender.com`
 
 ## Authentication
 

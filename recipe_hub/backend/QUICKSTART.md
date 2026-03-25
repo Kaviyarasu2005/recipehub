@@ -37,7 +37,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Server runs on `https://recipehub-backend-b0oz.onrender.com/api`
+Server runs on `https://recipehub-backend-b0oz.onrender.com`
 
 ## 3. Test API
 
@@ -67,7 +67,7 @@ curl https://recipehub-backend-b0oz.onrender.com/api/videos \
 ```python
 import requests
 
-BASE_URL = "https://recipehub-backend-b0oz.onrender.com/api"
+BASE_URL = "https://recipehub-backend-b0oz.onrender.com"
 
 # Login
 response = requests.post(f"{BASE_URL}/auth/login", json={
