@@ -45,20 +45,20 @@ Server runs on `https://recipehub-backend-b0oz.onrender.com`
 
 ```bash
 # Signup
-curl -X POST https://recipehub-backend-b0oz.onrender.com/api/auth/signup \
+curl -X POST https://recipehub-backend-b0oz.onrender.com/auth/signup \
   -H "Content-Type: application/json" \
   -d '{"username":"testuser","email":"test@example.com","password":"testpass123","password2":"testpass123","role":"user"}'
 
 # Login
-curl -X POST https://recipehub-backend-b0oz.onrender.com/api/auth/login \
+curl -X POST https://recipehub-backend-b0oz.onrender.com/auth/login \
   -H "Content-Type: application/json" \
   -d '{"username":"testuser","password":"testpass123"}'
 
 # Get videos (no auth required)
-curl https://recipehub-backend-b0oz.onrender.com/api/videos?status=approved
+curl https://recipehub-backend-b0oz.onrender.com/videos?status=approved
 
 # Get videos with auth (replace TOKEN with access token from login)
-curl https://recipehub-backend-b0oz.onrender.com/api/videos \
+curl https://recipehub-backend-b0oz.onrender.com/videos \
   -H "Authorization: Bearer TOKEN"
 ```
 
@@ -85,7 +85,7 @@ print(response.json())
 
 ## 4. Access Django Admin
 
-1. Go to `https://recipehub-backend-b0oz.onrender.com/api/django-admin/`
+1. Go to `https://recipehub-backend-b0oz.onrender.com/django-admin/`
 2. Login with superuser credentials
 3. Manage users, videos, jobs, etc.
 
