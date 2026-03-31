@@ -3,12 +3,25 @@ import type { InstructionStep, ContentStatus, Job, UserNotification } from './ty
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://recipehub-backend-b0oz.onrender.com';
 
-function buildUrl(path: string): string {
+export const resolveMediaUrl = (path: string | null | undefined) => {
+  if (!path) return undefined;
   if (/^https?:\/\//i.test(path)) return path;
   const base = API_BASE.replace(/\/+$/, '');
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${base}${cleanPath}`;
+};
+
+function buildUrl(path: string): string {
+  if (/^https?:\/\//i.test(path)) return path;
+  
+  const base = API_BASE.replace(/\/+$/, '');
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  // Ensure /api/ prefix if not present
-  const apiPath = normalized.startsWith('/api/') ? normalized : `/api${normalized}`;
+  
+  // Defensive check: only add /api if NEITHER the base nor the path has it
+  const hasApiInBase = base.toLowerCase().endsWith('/api');
+  const hasApiInPath = normalized.toLowerCase().startsWith('/api/');
+  
+  const apiPath = (hasApiInBase || hasApiInPath) ? normalized : `/api${normalized}`;
   return `${base}${apiPath}`;
 }
 

@@ -21,10 +21,10 @@ class VideoViewSet(viewsets.ModelViewSet):
     serializer_class = VideoDetailSerializer
 
     def get_queryset(self):
-        queryset = Video.objects.select_related('user__profile').annotate(
+        queryset = Video.objects.annotate(
             view_count=Count('views', distinct=True),
             like_count=Count('likes', distinct=True)
-        ).order_by("-created_at")
+        ).select_related('user').prefetch_related('user__profile').order_by("-created_at")
         
         user_id = self.request.query_params.get('user')
         if user_id:
@@ -72,8 +72,9 @@ class VideoViewSet(viewsets.ModelViewSet):
         
         try:
             page_videos = paginator.get_page(page)
-        except Exception:
-            return Response({'error': 'Invalid page'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error(f"Pagination error in video feed: {str(e)}")
+            return Response({'error': 'Invalid page or query failed'}, status=status.HTTP_400_BAD_REQUEST)
         
         serializer = self.get_serializer(page_videos, many=True)
         return Response({

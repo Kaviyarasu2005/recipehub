@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Video, UserProfile } from '../types';
 import { UserAvatar } from '../components/UserAvatar';
 import { Play, Check, Star, Send, ChevronDown, ChevronUp, ThumbsUp, ThumbsDown, Share2, ArrowLeft, Loader2 } from 'lucide-react';
-import { likeVideoApi, commentVideoApi, fetchCommentsApi, ApiComment, fetchVideoDetail } from '../api';
+import { likeVideoApi, commentVideoApi, fetchCommentsApi, ApiComment, fetchVideoDetail, resolveMediaUrl } from '../api';
 
 interface RecipeDetailProps {
   video: Video;
@@ -37,7 +37,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ video, onNavigateToP
           ingredients: fullData.ingredients || [],
           instructions: fullData.instructions || [],
           description: fullData.description,
-          video_url: fullData.video_url
+          video_url: resolveMediaUrl(fullData.video_url)
         };
         setFullVideo(updatedVideo);
       } catch (err) {

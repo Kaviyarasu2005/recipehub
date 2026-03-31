@@ -4,7 +4,7 @@ from .models import Job, JobApplication
 class JobSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source='user.username', read_only=True)
     company_logo = serializers.SerializerMethodField()
-    company_industry = serializers.CharField(source='user.profile.company_details.industry', read_only=True, default='Other')
+    company_industry = serializers.CharField(source='user.profile.industry', read_only=True, default='Other')
     applicant_ids = serializers.SerializerMethodField()
 
     class Meta:

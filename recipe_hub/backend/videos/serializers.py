@@ -13,8 +13,10 @@ class VideoCommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'username', 'avatar', 'created_at')
 
     def get_avatar(self, obj):
-        profile = getattr(obj.user, 'profile', None)
-        return profile.profile_picture if profile else None
+        try:
+            return obj.user.profile.profile_picture if obj.user and hasattr(obj.user, 'profile') else None
+        except Exception:
+            return None
 
 
 class VideoFeedSerializer(serializers.ModelSerializer):
@@ -30,6 +32,7 @@ class VideoFeedSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "thumbnail_url",
+            "user",  # Added to match Frontend's mapApiVideoToVideo
             "creator_id",
             "creator_username",
             "creator_avatar",
@@ -39,8 +42,10 @@ class VideoFeedSerializer(serializers.ModelSerializer):
         ]
 
     def get_creator_avatar(self, obj):
-        profile = getattr(obj.user, 'profile', None)
-        return profile.profile_picture if profile else None
+        try:
+            return obj.user.profile.profile_picture if obj.user and hasattr(obj.user, 'profile') else None
+        except Exception:
+            return None
 
 
 class VideoDetailSerializer(serializers.ModelSerializer):
@@ -79,8 +84,10 @@ class VideoDetailSerializer(serializers.ModelSerializer):
 
 
     def get_creator_avatar(self, obj):
-        profile = getattr(obj.user, 'profile', None)
-        return profile.profile_picture if profile else None
+        try:
+            return obj.user.profile.profile_picture if obj.user and hasattr(obj.user, 'profile') else None
+        except Exception:
+            return None
 
 
     def create(self, validated_data):

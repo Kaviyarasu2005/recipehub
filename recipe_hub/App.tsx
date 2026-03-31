@@ -15,15 +15,10 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { CompanyDashboard } from './pages/CompanyDashboard';
 import { Notifications } from './pages/Notifications';
 import { useNavigate } from 'react-router-dom';
-import { AuthResponse, ApiVideo, fetchApprovedVideos, fetchProfile, ApiUser, likeVideoApi, fetchVideoDetail, fetchJobsApi, createJobApi, deleteJobApi, updateJobStatusApi, fetchNotificationsApi, applyToJobApi } from './api';
+import { AuthResponse, ApiVideo, fetchApprovedVideos, fetchProfile, ApiUser, likeVideoApi, fetchVideoDetail, fetchJobsApi, createJobApi, deleteJobApi, updateJobStatusApi, fetchNotificationsApi, applyToJobApi, resolveMediaUrl } from './api';
 import { supabase } from './src/lib/supabase';
 import { Briefcase, Bell, Clock, CircleHelp } from 'lucide-react';
 
-const buildMediaUrl = (path: string | null | undefined) => {
-  if (!path) return undefined;
-  if (/^https?:\/\//i.test(path)) return path;
-  return path.startsWith('/') ? path : `/${path}`;
-};
 
 const mapApiVideoToVideo = (api: ApiVideo): Video => {
   const createdAt = api.created_at ? new Date(api.created_at) : null;
@@ -37,16 +32,16 @@ const mapApiVideoToVideo = (api: ApiVideo): Video => {
     likes: api.like_count ?? 0,
     postedTime,
     duration: '00:00',
-    thumbnail: buildMediaUrl(api.thumbnail_url),
+    thumbnail: resolveMediaUrl(api.thumbnail_url),
     category: api.category || 'Veg',
     description: api.description,
-    creatorAvatar: buildMediaUrl((api as any).creator_avatar),
+    creatorAvatar: resolveMediaUrl((api as any).creator_avatar),
     creator_id: String((api as any).creator_id),
     ingredients: api.ingredients || [],
     instructions: api.instructions || [],
     status: api.status || 'approved',
     user_id: String(api.user),
-    video_url: buildMediaUrl(api.video_url),
+    video_url: resolveMediaUrl(api.video_url),
   } as any;
 };
 
@@ -56,7 +51,7 @@ const mapApiUserToProfile = (user: ApiUser): UserProfile => ({
   handle: `@${user.username}`,
   role: (user.role?.charAt(0).toUpperCase() + user.role?.slice(1) || 'User') as any,
   bio: user.bio || '',
-  avatar: buildMediaUrl(user.avatar),
+  avatar: resolveMediaUrl(user.avatar),
   stats: {
     videos: (user as any).videos_count || 0,
     followers: Number((user as any).followers_count || 0),

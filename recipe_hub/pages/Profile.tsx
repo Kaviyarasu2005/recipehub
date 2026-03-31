@@ -3,7 +3,7 @@ import { Video, Page, UserProfile } from '../types';
 import { UserAvatar } from '../components/UserAvatar';
 import { UserPlus, Check, Utensils, Heart, Edit2, Upload, X, Camera, ChevronRight, Search as SearchIcon, Loader2 } from 'lucide-react';
 import { VideoCard } from '../components/VideoCard';
-import { followUserApi, unfollowUserApi } from '../api';
+import { followUserApi, unfollowUserApi, resolveMediaUrl } from '../api';
 
 interface ProfileProps {
   user: UserProfile;
@@ -144,16 +144,16 @@ export const Profile: React.FC<ProfileProps> = ({
           likes: api.like_count ?? 0,
           postedTime: api.created_at ? new Date(api.created_at).toLocaleDateString() : '',
           duration: '00:00',
-          thumbnail: api.thumbnail_url,
+          thumbnail: resolveMediaUrl(api.thumbnail_url),
           category: api.category || 'Veg',
           description: api.description,
-          creatorAvatar: api.creator_avatar,
+          creatorAvatar: resolveMediaUrl(api.creator_avatar),
           creator_id: String(api.creator_id || api.user),
           ingredients: api.ingredients || [],
           instructions: api.instructions || [],
           status: api.status || 'approved',
           user_id: String(api.user),
-          video_url: api.video_url,
+          video_url: resolveMediaUrl(api.video_url),
         } as Video));
         setProfileVideos(mapped);
       } catch (err) {
@@ -227,7 +227,7 @@ export const Profile: React.FC<ProfileProps> = ({
         id: String(u.id),
         name: u.first_name || u.username || 'Chef',
         handle: `@${u.username}`,
-        avatar: u.avatar || '',
+        avatar: resolveMediaUrl(u.avatar || ''),
         role: u.role as any,
         bio: u.bio || '',
         stats: { videos: 0, followers: 0, following: 0 }
