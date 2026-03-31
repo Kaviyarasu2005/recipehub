@@ -47,28 +47,24 @@ class VideoViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update', 'destroy', 'like', 'comment']:
             return [IsAuthenticated()]
         return [AllowAny()]
-
     @action(detail=False, methods=['get'])
     def feed(self, request):
 
         print("🔥 FEED API HIT")
 
-        videos = self.get_queryset()[:20]
+        videos = self.get_queryset()   # ❗ no slice here
 
         print("✅ DB FETCH DONE")
-
-        sort = request.GET.get("sort", "recent")
-        if sort == "recent":
-            videos = videos.order_by("-created_at")
 
         try:
             limit = int(request.GET.get("limit", 20))
         except ValueError:
             limit = 20
+
         limit = max(1, min(limit, 50))
+        page = request.GET.get("page", 1)
 
         paginator = Paginator(videos, limit)
-        page = request.GET.get("page", 1)
 
         try:
             page_videos = paginator.get_page(page)
@@ -83,21 +79,8 @@ class VideoViewSet(viewsets.ModelViewSet):
             'num_pages': paginator.num_pages,
             'current_page': page_videos.number,
             'results': serializer.data
-    })
-        
-        try:
-            page_videos = paginator.get_page(page)
-        except Exception as e:
-            logger.error(f"Pagination error in video feed: {str(e)}")
-            return Response({'error': 'Invalid page or query failed'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        serializer = self.get_serializer(page_videos, many=True)
-        return Response({
-            'count': paginator.count,
-            'num_pages': paginator.num_pages,
-            'current_page': page_videos.number,
-            'results': serializer.data
         })
+            
 
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
