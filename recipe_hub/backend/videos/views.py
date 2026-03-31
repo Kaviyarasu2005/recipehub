@@ -50,12 +50,12 @@ class VideoViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def feed(self, request):
-        """
-        Paginated video feed with optional limit/sort parameters.
-        Supports:
-        - /api/videos/feed/?limit=5&sort=recent
-        """
-        videos = self.get_queryset()
+
+        print("🔥 FEED API HIT")
+
+        videos = self.get_queryset()[:20]
+
+        print("✅ DB FETCH DONE")
 
         sort = request.GET.get("sort", "recent")
         if sort == "recent":
@@ -69,6 +69,21 @@ class VideoViewSet(viewsets.ModelViewSet):
 
         paginator = Paginator(videos, limit)
         page = request.GET.get("page", 1)
+
+        try:
+            page_videos = paginator.get_page(page)
+        except Exception as e:
+            logger.error(f"Pagination error in video feed: {str(e)}")
+            return Response({'error': 'Invalid page'}, status=400)
+
+        serializer = self.get_serializer(page_videos, many=True)
+
+        return Response({
+            'count': paginator.count,
+            'num_pages': paginator.num_pages,
+            'current_page': page_videos.number,
+            'results': serializer.data
+    })
         
         try:
             page_videos = paginator.get_page(page)
