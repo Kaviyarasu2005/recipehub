@@ -11,6 +11,7 @@ class Video(models.Model):
     category = models.CharField(max_length=100, blank=True, default="Veg")
     status = models.CharField(max_length=20, default="approved", choices=[("pending", "Pending"), ("approved", "Approved"), ("rejected", "Rejected")])
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='videos')
+    duration = models.CharField(max_length=10, default="00:00", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

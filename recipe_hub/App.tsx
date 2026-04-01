@@ -31,7 +31,7 @@ const mapApiVideoToVideo = (api: ApiVideo): Video => {
     views: `${api.view_count ?? 0} views`,
     likes: api.like_count ?? 0,
     postedTime,
-    duration: '00:00',
+    duration: api.duration || '00:00',
     thumbnail: resolveMediaUrl(api.thumbnail_url),
     category: api.category || 'Veg',
     description: api.description,

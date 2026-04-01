@@ -34,6 +34,7 @@ export const UploadPage: React.FC<UploadPageProps> = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [duration, setDuration] = useState("00:00");
 
   const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState<InstructionStep[]>([
@@ -87,7 +88,19 @@ export const UploadPage: React.FC<UploadPageProps> = ({
 
   const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) setVideoFile(file);
+    if (file) {
+      setVideoFile(file);
+      // Calculate duration
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src);
+        const mins = Math.floor(video.duration / 60);
+        const secs = Math.floor(video.duration % 60);
+        setDuration(`${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
+      };
+      video.src = URL.createObjectURL(file);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -110,6 +123,7 @@ export const UploadPage: React.FC<UploadPageProps> = ({
       formData.append("title", title);
       formData.append("description", description);
       formData.append("category", selectedCategory || "Popular");
+      formData.append("duration", duration);
 
       const cleanIngredients = ingredients.filter((i) => i.trim() !== "");
 
@@ -139,7 +153,7 @@ export const UploadPage: React.FC<UploadPageProps> = ({
         creator: userName,
         views: "0 views",
         postedTime: "Just now",
-        duration: "00:00",
+        duration: apiVideo.duration || duration,
         thumbnail: apiVideo.thumbnail_url || "",
         category: selectedCategory || "Popular",
         description: apiVideo.description,

@@ -155,6 +155,7 @@ export interface ApiVideo {
   title: string;
   description: string;
   video_url: string;
+  duration?: string;
   thumbnail_url: string | null;
   creator_username: string;
   view_count: number;

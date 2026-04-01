@@ -38,7 +38,9 @@ class VideoFeedSerializer(serializers.ModelSerializer):
             "creator_avatar",
             "view_count",
             "like_count",
-            "category"
+            "category",
+            "duration",
+            "video_url"
         ]
 
     def get_creator_avatar(self, obj):
@@ -79,6 +81,7 @@ class VideoDetailSerializer(serializers.ModelSerializer):
             'like_count',
             'comments',
             'created_at',
+            'duration'
         ]
         read_only_fields = ('id','created_at','user','video_url','thumbnail_url')
 
